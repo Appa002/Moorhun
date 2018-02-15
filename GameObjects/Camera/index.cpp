@@ -1,22 +1,48 @@
-#include <string>
-#include <iostream>
 #include "../../Simple2DSource/header/Simple2D.h"
-#include "../../Simple2DSource/header/types.h"
 
+using namespace Simple2D;
+class Camera : public Behavior{
+public:
 
-Simple2D::Vec3* position;
-ADD_PROPERTY(Simple2D::Vec3*, position);
+    unsigned int count = 0;
+    unsigned int moorCount = 0;
 
+    int* lives;
+    bool* halt;
 
-export void init() {
-    position = new Simple2D::Vec3(0.0f, 0.0f, 0);
-}
+    void init() override {
+        lives = new int(3);
+        halt = new bool(false);
+        addAttribute<int>("lives", lives);
+        addAttribute<bool>("halt", halt);
+    }
 
-export void setup() {
-    //Simple2D::findGameObject("TestObj")->loadNewSprite("./TestObj/sprite.png");
-}
+    void setup() override {
+        auto o = findGameObject("Moorhun");
+        cloneGameObject(findGameObject("Moorhun"),"ReferenceHuhn");
+        findGameObject("ReferenceHuhn")->loadNewSprite("");
+    }
 
+    void update() override {
 
-export void update() {
+        if(*halt)
+            return;
 
-}
+        if(*lives != 3 && *lives > -1){
+            findGameObject("Lives_" + std::to_string(*lives))->loadNewSprite("");
+        }
+
+        if(*lives == -1){
+            std::cout << "[GAME OVER]" << std::endl;
+            *halt = true;
+        }
+        if(count == 50){
+            count = 0;
+            moorCount++;
+            cloneGameObject(findGameObject("ReferenceHuhn"), "Moorhun_" + std::to_string(moorCount));
+        }
+        count++;
+    }
+};
+
+REGISTER_GAME_OBJECT(Camera)

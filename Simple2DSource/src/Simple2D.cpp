@@ -1,4 +1,7 @@
 #include "../header/Simple2D.h"
+#include "../header/types.h"
+#include "../header/Utils.h"
+#include <lua.hpp>
 
 std::vector<Simple2D::GameObject*>* gameObjects;
 
@@ -12,26 +15,33 @@ Simple2D::GameObject* Simple2D::findGameObject(std::string name){
             return gObj;
         }
     }
-    return nullptr;
+   return nullptr;
 }
 
-std::vector<Simple2D::GameObject *> *Simple2D::getVec() {
-    return gameObjects;
-}
-
-void Simple2D::cloneGameObject(GameObject *toClone, std::string newName) {
-    GameObject* gameObject = new GameObject();
-    gameObject->handle = toClone->handle;
-    gameObject->updatePointer = toClone->updatePointer;
-    gameObject->setupPointer = toClone->setupPointer;
-    gameObject->path = toClone->path;
+Simple2D::GameObject * Simple2D::cloneGameObject(GameObject *toClone, std::string newName) {
+    GameObject* gameObject = new GameObject;
+    gameObjects->push_back(gameObject);
     gameObject->name = newName;
-    gameObject->preSetup();
+    gameObject->path = toClone->path;
 
-    for(Attribute& attr : *toClone->getAttributeVec()){
-        toClone->getAttributeVec()->push_back(attr);
+    ExternalCode::Handle h = ExternalCode::open(toClone->path + "/external.so");
+    ((void(*)(std::vector<GameObject*>*))(ExternalCode::find(h, "_prop_gameObjects")))(gameObjects);
+    gameObject->behavior = ((Behavior*(*)())(ExternalCode::find(h, "_entry_point")))();
+
+    gameObject->behavior->init();
+    gameObject->preSetup();
+    gameObject->behavior->setup();
+
+
+    return gameObject;
+}
+
+Simple2D::GameObject *Simple2D::findGameObject(Simple2D::Behavior *address) {
+    for(auto obj : *gameObjects){
+        if(obj->behavior == address){
+            return obj;
+        }
     }
 
-    gameObjects->push_back(gameObject);
-    std::cout << "Created new object" << std::endl;
+    return nullptr;
 }

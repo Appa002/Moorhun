@@ -36,7 +36,7 @@ public:
             std::cout << "[GAME OVER]" << std::endl;
             *halt = true;
         }
-        if(count == 50){
+        if(count == 75){
             count = 0;
             moorCount++;
             cloneGameObject(findGameObject("ReferenceHuhn"), "Moorhun_" + std::to_string(moorCount));

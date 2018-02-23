@@ -7,6 +7,7 @@ public:
     Vec3* position = nullptr;
     static unsigned int amountOfLiveObjects;
     unsigned int myId;
+    int i;
 
     void init() override {
         position = new Vec3(-0.5f, 0.7f, 0.0f);

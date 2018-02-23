@@ -231,7 +231,6 @@ void Simple2D::GameObject::loadNewSprite(std::string path) {
 }
 
 void Simple2D::GameObject::remove() {
-
     auto vec = MapManager::get()->getCurrentMap()->gameObjects;
 
     for(auto objAddress : *vec){

@@ -10,13 +10,13 @@ A Game Object can have any name, except "Camera" it's special.
 More to this later.
 When you look inside a folder for a GameObject for instance "Moorhun", you will find a few files. (The Path to Moorhun's Game Object is "GameObjects/Moorhun").
 
-+--------------------------------------------------------------------------------+
++------------------------------------------------------------------------------+
 | Name:         | Function:                                  | Reguired?      |
 | "cfg.lua"     | Defines the Name of the GameObject         | Yes            |
 | "sprite.png"  | Sprite autoloaded by the engine            | No             |
 | "index.cpp"   | Gets Compiled to "extenal.so" which is     |                |
           autoloaded by the engine and contains the logic    | Yes            |
-+---------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------+
  
 In the Game Object "Moorhun" you will also find "hit.png", this is a sprite which gets manually loaded when you click on the Moorhun.
 Look at Moorhun's index.cpp file to see how a Game Object is build.

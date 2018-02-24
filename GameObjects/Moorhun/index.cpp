@@ -52,6 +52,7 @@ public:
         velocity->y -= (float)1/1100;
     }
 
+
     void onEvent(SDL_Event& e) override {
         if(findGameObject(this)->name == "ReferenceHuhn")
             return;
